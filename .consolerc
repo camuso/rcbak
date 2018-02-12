@@ -1,0 +1,9 @@
+config * {
+     master console.lab.bos.redhat.com;
+     playback 1000;
+}
+terminal xterm {
+    attach "^[]0;conserver: U@C^G";
+    attachsubst U=us,C=cs;
+}
+
