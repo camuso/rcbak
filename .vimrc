@@ -218,7 +218,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Set the highlight for tabs
-highlight WhitespaceTabs ctermbg=4 guibg=4
+"highlight WhitespaceTabs ctermbg=4 guibg=4
 "
 " Build a vim command to match tabs
 let s:tab_matcher = 'match WhitespaceTabs /\t/'
@@ -228,7 +228,7 @@ let s:tab_matcher = 'match WhitespaceTabs /\t/'
 function! TabsCheck ()
 	let g:check_tabs = exists('g:check_tabs') ? !g:check_tabs : 1
 	if g:check_tabs
-		highlight WhitespaceTabs ctermbg=4 guibg=4
+		highlight WhitespaceTabs ctermbg=blue guibg=blue
 		exec s:tab_matcher
 	"	highlight WhitespaceEOL ctermbg=red guibg=red
 	"	match WhitespaceEOL /\s\+$/
@@ -283,8 +283,8 @@ set diffopt=vertical
 set ignorecase smartcase
 
 " Use ctrl-s to save while editing in insert mode.
-inoremap <c-s> <c-o>:update<CR>
-noremap <c-s> :update<CR>
+inoremap <c-w> <c-o>:update<CR>
+noremap <c-w> :update<CR>
 
 " Use ctrl-x to quit from insert mode.
 inoremap <c-x> <esc>:quit<CR>
@@ -335,3 +335,4 @@ call pathogen#helptags() " generate helptags for everything in ‘runtimepath’
 syntax on
 filetype plugin indent on
 
+" autocmd vimenter * NERDTree
