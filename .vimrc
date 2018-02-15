@@ -218,7 +218,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Set the highlight for tabs
-"highlight WhitespaceTabs ctermbg=4 guibg=4
+highlight WhitespaceTabs ctermbg=darkblue guibg=darkblue
 "
 " Build a vim command to match tabs
 let s:tab_matcher = 'match WhitespaceTabs /\t/'
@@ -228,7 +228,7 @@ let s:tab_matcher = 'match WhitespaceTabs /\t/'
 function! TabsCheck ()
 	let g:check_tabs = exists('g:check_tabs') ? !g:check_tabs : 1
 	if g:check_tabs
-		highlight WhitespaceTabs ctermbg=blue guibg=blue
+		highlight WhitespaceTabs ctermbg=darkblue guibg=blue
 		exec s:tab_matcher
 	"	highlight WhitespaceEOL ctermbg=red guibg=red
 	"	match WhitespaceEOL /\s\+$/
@@ -283,8 +283,14 @@ set diffopt=vertical
 set ignorecase smartcase
 
 " Use ctrl-s to save while editing in insert mode.
+inoremap <c-s> <c-o>:update<CR>
+noremap <c-s> :update<CR>
+
+" Unmap control-w.
 inoremap <c-w> <c-o>:update<CR>
-noremap <c-w> :update<CR>
+
+" unmap -
+noremap <-> <c-o>:update<CR>
 
 " Use ctrl-x to quit from insert mode.
 inoremap <c-x> <esc>:quit<CR>
@@ -313,11 +319,11 @@ hi search term=reverse term=bold ctermbg=5 ctermfg=2
 :inoremap <c-o><F5> :buffers<CR>:buffer<Space>
 
 " My signature
-noremap <F12>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 inoremap <F12> <c-o>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
+noremap <F12>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 
-noremap <F9>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 inoremap <F9> <c-o>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
+noremap <F9>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 
 com! -nargs=1 -range Sbak call MoveSelectedLinesToFile(<f-args>)
 fun! MoveSelectedLinesToFile(filename)
