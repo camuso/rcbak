@@ -284,16 +284,19 @@ set ignorecase smartcase
 
 " Use ctrl-s to save while editing in insert mode.
 inoremap <c-s> <c-o>:update<CR>
+vnoremap <c-s> <c-o>:update<CR>
 noremap <c-s> :update<CR>
 
 " Unmap control-w.
-inoremap <c-w> <c-o>:update<CR>
+noremap <c-w> <Nop>
+inoremap <c-w> <Nop>
 
 " unmap -
 noremap <-> <c-o>:update<CR>
 
 " Use ctrl-x to quit from insert mode.
 inoremap <c-x> <esc>:quit<CR>
+vnoremap <c-x> <esc><esc>:quit<CR>
 noremap <c-x> :quit<CR>
 
 " Shift-Enter to add a line below from Normal mode
