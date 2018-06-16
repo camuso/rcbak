@@ -29,3 +29,5 @@
 [sendemail]
 	smtpserver = smtp.corp.redhat.com
 	suppresscc = all
+[alias]
+	whatadded = log --diff-filter=A
