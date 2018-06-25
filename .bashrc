@@ -99,6 +99,15 @@ vim(){
     command vim "$@"
     stty "$STTYOPTS"
 }
+typeset -fx vim
+
+vimdiff(){
+    local STTYOPTS="$(stty --save)"
+    stty stop '' -ixoff
+    command vimdiff "$@"
+    stty "$STTYOPTS"
+}
+typeset -fx vimdiff
 
 lsd(){
     [ "$1" ] && cd $1;
@@ -124,6 +133,7 @@ lsf(){
 #
 comment2commits(){
 	echo "comment2commits source-dir:$1  dest-file: $2"
+	[ $# -eq 2 ] || exit 1
 	source ~/bin/lib/ui.source;
 	source ~/bin/lib/gitutilities.source;
 	git_comment2commitsfile "$1" "$2";
@@ -136,7 +146,8 @@ comment2commits(){
 #
 comment2list(){
 	local templist=/dev/shm/templist
-
+	echo "comment2commits patch-directory"
+	[ $# -eq 1 ] || exit 1
 	comment2commits "$1" $templist 2>&1>/dev/null
 	while read line; do
 		git log --oneline -n1 $(echo $line | cut -d' ' -f1)
