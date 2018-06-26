@@ -30,4 +30,5 @@
 	smtpserver = smtp.corp.redhat.com
 	suppresscc = all
 [alias]
-	whatadded = log --diff-filter=A
+	whatadds = log --diff-filter=A
+	whatmods = log --follow --no-merges -c -S
