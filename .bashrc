@@ -172,3 +172,7 @@ strtok() {
 	IFS="$2" read -r -a $3 <<< "$1"
 }
 
+# git backporting helps
+up() { extup -1 $1; }
+upme() { extup -r $(gitlasttag)..HEAD; }
+gitfilhis() { gitnice -r -c "$1" "$2"; }
