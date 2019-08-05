@@ -37,25 +37,25 @@ unset OFF && declare OFF="\033[0m"
 #
 # Text color definitions
 #
-unset BLK && declare BLK='\e[0;30m'
-unset RED && declare RED='\e[0;31m'
-unset GRN && declare GRN='\e[0;32m'
-unset YEL && declare YEL='\e[0;33m'
-unset BLU && declare BLU='\e[0;34m'
-unset MGT && declare MGT='\e[0;35m'
-unset CYN && declare CYN='\e[0;36m'
-unset WHT && declare WHT='\e[0;37m'
+unset BLK && declare BLK='\[\e[0;30m\]'
+unset RED && declare RED='\[\e[0;31m\]'
+unset GRN && declare GRN='\[\e[0;32m\]'
+unset YEL && declare YEL='\[\e[0;33m\]'
+unset BLU && declare BLU='\[\e[0;34m\]'
+unset MGT && declare MGT='\[\e[0;35m\]'
+unset CYN && declare CYN='\[\e[0;36m\]'
+unset WHT && declare WHT='\[\e[0;37m\]'
 #
 # Bright colors
 #
-unset BBLK && declare BBLK='\e[1;90m'
-unset BRED && declare BRED='\e[1;91m'
-unset BGRN && declare BGRN='\e[1;92m'
-unset BYEL && declare BYEL='\e[1;93m'
-unset BBLU && declare BBLU='\e[1;94m'
-unset BMGT && declare BMGT='\e[1;95m'
-unset BCYN && declare BCYN='\e[1;96m'
-unset BWHT && declare BWHT='\e[1;97m'
+unset BBLK && declare BBLK='\[\e[1;90m\]'
+unset BRED && declare BRED='\[\e[1;91m\]'
+unset BGRN && declare BGRN='\[\e[1;92m\]'
+unset BYEL && declare BYEL='\[\e[1;93m\]'
+unset BBLU && declare BBLU='\[\e[1;94m\]'
+unset BMGT && declare BMGT='\[\e[1;95m\]'
+unset BCYN && declare BCYN='\[\e[1;96m\]'
+unset BWHT && declare BWHT='\[\e[1;97m\]'
 
 if [ $(id -u) -eq 0 ]; then # you are root, set root prompt
 	export PS1="\[[$BRED\u$BRED@$BGRN\h $BYEL\W$OFF\]]$BRED# $OFF"
@@ -120,6 +120,15 @@ vim(){
     command vim "$@"
     stty "$STTYOPTS"
 }
+typeset -fx vim
+
+vimdiff(){
+    local STTYOPTS="$(stty --save)"
+    stty stop '' -ixoff
+    command vimdiff "$@"
+    stty "$STTYOPTS"
+}
+typeset -fx vimdif
 
 lsd(){
     [ "$1" ] && cd $1;
@@ -145,6 +154,7 @@ lsf(){
 #
 comment2commits(){
 	echo "comment2commits source-dir:$1  dest-file: $2"
+	[ $# -eq 2 ] || exit 1
 	source ~/bin/lib/ui.source;
 	source ~/bin/lib/gitutilities.source;
 	git_comment2commitsfile "$1" "$2";
@@ -157,6 +167,8 @@ comment2commits(){
 #
 comment2list(){
 	local templist=/dev/shm/templist
+	echo "comment2commits patch-directory"
+	[ $# -eq 1 ] || exit 1
 
 	comment2commits "$1" $templist 2>&1>/dev/null
 	while read line; do
@@ -182,3 +194,8 @@ strtok() {
 	IFS="$2" read -r -a $3 <<< "$1"
 }
 
+# git backporting helps
+up() { extup -1 $1; }
+upme() { extup -r $(gitlasttag)..HEAD; }
+gitfilhis() { gitnice -r -c "$1" "$2"; }
+showme() { git show $2 | grep --color -n "$1"; }
