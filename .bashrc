@@ -58,9 +58,9 @@ unset BCYN && declare BCYN='\[\e[1;96m\]'
 unset BWHT && declare BWHT='\[\e[1;97m\]'
 
 if [ $(id -u) -eq 0 ]; then # you are root, set root prompt
-	export PS1="\[[$BRED\u$BRED@$BGRN\h $BYEL\W$OFF\]]$BRED# $OFF"
+	export PS1="[$BRED\u$BRED@$BGRN\h $BYEL\W$OFF]$BRED# $OFF"
 else # normal user
-	export PS1="\[[$BMGT\u$BRED@$BGRN\h $BYEL\W$OFF\]]$BMGT$ $OFF"
+	export PS1="[$BMGT\u$BRED@$BGRN\h $BYEL\W$OFF]$BMGT$ $OFF"
 fi
 
 # User specific aliases and functions
