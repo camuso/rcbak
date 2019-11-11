@@ -14,7 +14,7 @@ shopt -s extglob
 #
 # export PS4='+(${BASH_SOURCE}:${LINENO}): '
 
-[ $(echo $PATH | grep -w $HOME/bin) ] || export PATH=$PATH:$HOME/bin
+[ $(echo $PATH | grep -w $HOME/bin) ] || export PATH=$PATH:$HOME/bin:$HOME/tools/public-inbox-scripts/
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
@@ -31,9 +31,9 @@ export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=95:ln=32:bn=32:se=36'
 #
 # Text Attributes
 #
-unset BLD && declare BLD="\033[1m"
-unset UND && declare UND="\033[4m"
-unset OFF && declare OFF="\033[0m"
+unset BLD && declare BLD="\[\033[1m\]"
+unset UND && declare UND="\[\033[4m\]"
+unset OFF && declare OFF="\[\033[0m\]"
 #
 # Text color definitions
 #
