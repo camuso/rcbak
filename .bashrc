@@ -14,7 +14,13 @@ shopt -s extglob
 #
 # export PS4='+(${BASH_SOURCE}:${LINENO}): '
 
-[ $(echo $PATH | grep -w $HOME/bin) ] || export PATH=$PATH:$HOME/bin:$HOME/tools/public-inbox-scripts/
+# Prarit's semi-useless tools
+# git clone git://git.engineering.redhat.com/users/prarit/tools
+
+# Prarit's RHKL git repo tools
+# git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
+
+[ $(echo $PATH | grep -w $HOME/bin) ] || export PATH=$PATH:$HOME/bin:$HOME/public-inbox-tools/
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
