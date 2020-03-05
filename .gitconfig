@@ -32,3 +32,4 @@
 [alias]
 	whatadds = log --diff-filter=A
 	whatmods = log --follow --no-merges -c -S
+	pull = pull -c http.sslVerify=false
