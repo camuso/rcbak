@@ -150,6 +150,10 @@ lsf(){
 	[ "$1" ] && cd -;
 }
 
+myos() {
+	cat /etc/*release | grep -w PLATFORM_ID | cut -d':' -f2 | cut -d'"' -f1
+}
+
 # comment2commits source-dir dest-file
 #
 # Parses the patchfiles in source-dir for commit numbers and writes them
