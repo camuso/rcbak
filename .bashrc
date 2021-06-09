@@ -213,3 +213,4 @@ showme() { git show $2 | grep --color -n "$1"; }
 myremotes() { git remote -v | grep tcamuso; git branch -r | grep tcamuso; }
 gremote() { git branch -r | grep $1; }
 # export DISPLAY=localhost:0.0
+export HISTTIMEFORMAT="%d/%m/%y %T "
