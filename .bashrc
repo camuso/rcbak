@@ -214,3 +214,4 @@ myremotes() { git remote -v | grep tcamuso; git branch -r | grep tcamuso; }
 gremote() { git branch -r | grep $1; }
 # export DISPLAY=localhost:0.0
 export HISTTIMEFORMAT="%Y/%m/%d %T "
+export WORK="/WORK"
