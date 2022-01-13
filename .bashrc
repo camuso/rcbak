@@ -5,6 +5,9 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+source $HOME/bin/chrepo
+alias cr='chrepo'
+
 shopt -s extglob
 
 #export CLICOLOR=1
