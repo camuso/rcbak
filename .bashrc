@@ -5,9 +5,6 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-source $HOME/bin/chrepo
-alias cr='chrepo'
-
 shopt -s extglob
 
 #export CLICOLOR=1
@@ -218,3 +215,6 @@ gremote() { git branch -r | grep $1; }
 # export DISPLAY=localhost:0.0
 export HISTTIMEFORMAT="%Y/%m/%d %T "
 export WORK="/WORK"
+
+source $HOME/bin/chrepo
+alias cr='chrepo'
