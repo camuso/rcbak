@@ -88,8 +88,8 @@ alias gitampatch='rlwrap gitampatch'
 alias rold='pushd +1'
 alias rord='pushd -1'
 alias vboxmanage='/usr/lib/virtualbox/VBoxManage'
-alias rsyncv='rsync -Pvat -e "ssh -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
-alias rsyncp='rsync -Pat -e "ssh -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+alias rsyncp='rsync -Pat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
 alias grep="grep --color"
 
 # Need to get the grep version, because earlier versions do not support
@@ -117,7 +117,7 @@ alias grip='grep -iIHr -D skip --color'
 
 # ssh with no key checking and no known_hosts file
 #
-alias ssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+alias ssh="ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 [ -e /usr/bin/vimx ] && alias vim='/usr/bin/vimx'
 
