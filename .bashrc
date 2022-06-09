@@ -206,6 +206,15 @@ strtok() {
 	IFS="$2" read -r -a $3 <<< "$1"
 }
 
+# Set the title of a gnome terminal tab
+function set-title() {
+  if [[ -z "$ORIG" ]]; then
+    ORIG=$PS1
+  fi
+  TITLE="\[\e]2;$*\a\]"
+  PS1=${ORIG}${TITLE}
+}
+
 # git backporting helps
 up() { extup -1 $1; }
 upme() { extup -r $(gitlasttag)..HEAD; }
