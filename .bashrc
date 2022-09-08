@@ -228,3 +228,6 @@ export WORK="/WORK"
 
 source $HOME/bin/chrepo
 alias cr='chrepo'
+# alias wtitle='xdotool getactivewindow set_window --name'
+alias wtitle='xdotool selectwindow set_window --name'
+
