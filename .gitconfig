@@ -33,5 +33,9 @@
 	whatadds = log --diff-filter=A
 	whatmods = log --follow --no-merges -c -S
 	upd = -c http.sslVerify=false pull
+	commit = commit -s
+	cmt = commit -s
+	wip = checkout wip
+	alias = config --get-regexp ^alias\\.
 [http]
 	sslVerify = false
