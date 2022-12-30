@@ -35,8 +35,7 @@ export LS_COLORS
 # export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=01;32:ln=01;32:bn=32:se=36'
 export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=95:ln=32:bn=32:se=36'
 
-#
-# Text Attributes
+#** Text Attributes
 #
 unset BLD && declare BLD="\[\033[1m\]"
 unset UND && declare UND="\[\033[4m\]"
@@ -63,6 +62,7 @@ unset BBLU && declare BBLU='\[\e[1;94m\]'
 unset BMGT && declare BMGT='\[\e[1;95m\]'
 unset BCYN && declare BCYN='\[\e[1;96m\]'
 unset BWHT && declare BWHT='\[\e[1;97m\]'
+#*
 
 if [ $(id -u) -eq 0 ]; then # you are root, set root prompt
 	export PS1="[$BRED\u$BRED@$BGRN\h $BYEL\W$OFF]$BRED# $OFF"
@@ -70,18 +70,17 @@ else # normal user
 	export PS1="[$BMGT\u$BRED@$BGRN\h $BYEL\W$OFF]$BMGT$ $OFF"
 fi
 
-# User specific aliases and functions
-#
-alias rm='rm -i'
-alias mv='mv -i'
-alias cp='cp -iv'
-
 function today {
 	echo "Today's date is:"
 	date +"%A, %B %-d, %Y"
 }
+
+#** some aliases and functions
+#
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -iv'
 alias alf='ls -alFch'
-# alias lsd='ls -ald  */ .*/'
 alias searchdown='perl /usr/bin/searchdown.pl'
 alias mntiso='mount -o loop -t iso9660'
 alias gitampatch='rlwrap gitampatch'
@@ -91,6 +90,14 @@ alias vboxmanage='/usr/lib/virtualbox/VBoxManage'
 alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
 alias rsyncp='rsync -Pat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
 alias grep="grep --color"
+alias grap="grep --color -Hn$tabs"
+#** grip: grep -iIHr -D skip --color
+#   ignore case (i), ignore binaries (I), print filenames (H),
+#   and skip other file systems.
+alias grip='grep -iIHr -D skip --color'
+#** ssh with no key checking and no known_hosts file
+alias ssh="ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+#*
 
 # Need to get the grep version, because earlier versions do not support
 # the '-T' option.
@@ -108,16 +115,6 @@ grepversion=$(grep -V | head -1 | tr -cd '[[:digit:]]')
 #
 if [ $grepversion -ge $mingrepversion ]; then tabs='T'; else tabs=''; fi
 
-alias grap="grep --color -Hn$tabs"
-
-# grep ignoring case (i), ignoring binaries (I), print filenames (H),
-# and skip other file systems.
-#
-alias grip='grep -iIHr -D skip --color'
-
-# ssh with no key checking and no known_hosts file
-#
-alias ssh="ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 [ -e /usr/bin/vimx ] && alias vim='/usr/bin/vimx'
 
@@ -138,12 +135,20 @@ vimdiff(){
 }
 typeset -fx vimdif
 
+#** Little helpers
+#*
+#** lsd: ls directories starting at $1
+#   $1 - optional starting directory
+#*
 lsd(){
     [ "$1" ] && cd $1;
     ls --color=auto -ald */ .*/;
     [ "$1" ] && cd -
 }
 
+#** lsf: alf files only, no directories
+#   $1 - optional start directory
+#*
 # Also ... find . ! -name . -prune -type f
 lsf(){
 	[ "$1" ] && cd $1;
@@ -151,9 +156,17 @@ lsf(){
 	[ "$1" ] && cd -;
 }
 
+#** myos: show the OS of the current platform
+#*
 myos() {
 	cat /etc/*release | grep -w PLATFORM_ID | cut -d':' -f2 | cut -d'"' -f1
 }
+
+#** rmlinestr: remove lines from file containing given string
+#   $1 - search string
+#   $2 - file to search and remove line containing string
+#*
+rmlinestr() {sed -i "/"$1"/d" "$2"; }
 
 # comment2commits source-dir dest-file
 #
@@ -215,13 +228,38 @@ function set-title() {
   PS1=${ORIG}${TITLE}
 }
 
-# git backporting helps
+#** git backporting helps
+#*
+#** up: get the upstream commit for the -1 rhel commit
+#   $1 - path to subsystem directory or file
+#*
 up() { extup -1 $1; }
+
+#** upme: get the upstream commits for rhel commits starting at last tag
+#*
 upme() { extup -r $(gitlasttag)..HEAD; }
+
+#** gitfilhis: commit history for a given commit expr for a subsystem or file
+#   $1 - commit expression
+#   $2 - path to subsystem or file
+#*
 gitfilhis() { gitnice -r -c "$1" "$2"; }
+
+#** showme: show commit expression for given path to file or subystem
+#   $1 - path to subsystem or file
+#   $2 - commit expression
+#*
 showme() { git show $2 | grep --color -n "$1"; }
+
+#** myremotes: git remote -v | grep tcamuso; git branch -r | grep tcamuso;
+#*
 myremotes() { git remote -v | grep tcamuso; git branch -r | grep tcamuso; }
+
+#** gremote: search for a branch among the remotes
+#   $1 - the remote branch being sought
+#*
 gremote() { git branch -r | grep $1; }
+
 # export DISPLAY=localhost:0.0
 export HISTTIMEFORMAT="%Y/%m/%d %T "
 export WORK="/WORK"
