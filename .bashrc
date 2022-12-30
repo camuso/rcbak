@@ -166,7 +166,7 @@ myos() {
 #   $1 - search string
 #   $2 - file to search and remove line containing string
 #*
-rmlinestr() {sed -i "/"$1"/d" "$2"; }
+rmlinestr() { sed -i "/"$1"/d" "$2"; }
 
 # comment2commits source-dir dest-file
 #
