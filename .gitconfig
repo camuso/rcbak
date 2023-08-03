@@ -16,8 +16,8 @@
 [color "diff"]
 	meta = yellow bold
 	frag = magenta bold
-	old = red bold
-	new = green bold
+	old = "#FF99FF"
+	new = bold "#77FF77"
 
 [color "status"]
 	added = yellow
