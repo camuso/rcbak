@@ -273,7 +273,7 @@ noremap <F6> :call HyperWrap()<CR>
 highlight PreProc term=underline cterm=bold ctermfg=5
 
 " Toggle paste mode using F3 key
-set pastetoggle=<F3>
+" set pastetoggle=<F3>
 
 " Set vertical for diff mode
 set diffopt=vertical
@@ -324,9 +324,8 @@ hi search term=reverse term=bold ctermbg=5 ctermfg=2
 " My signature
 inoremap <F12> <c-o>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 noremap <F12>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
-
-inoremap <F9> <c-o>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
-noremap <F9>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
+" inoremap <F9> <c-o>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
+" noremap <F9>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 
 com! -nargs=1 -range Sbak call MoveSelectedLinesToFile(<f-args>)
 fun! MoveSelectedLinesToFile(filename)
@@ -349,4 +348,48 @@ filetype plugin indent on
 if &diff
     syntax off
 endif
+
+set fo+=nroj2
+
+" Highlight cursor line underneath the cursor horizontally.
+set cursorline
+
+" Highlight cursor line underneath the cursor vertically.
+set cursorcolumn
+
+" Press \\ to jump back to the last cursor position.
+nnoremap <leader>\ ``
+
+" Center the cursor vertically when moving to the next word during a search.
+nnoremap n nzz
+nnoremap N Nzz
+
+" Yank from cursor to the end of line.
+nnoremap Y y$
+
+function! SetIndentation()
+  " Set shift width to 4 spaces
+  set shiftwidth=4
+  " Set tabstop to 4 spaces
+  set tabstop=4
+  " Set expandtab to use spaces instead of tabs
+  " set expandtab
+endfunction
+
+" Map a key to trigger the function (you can change '<F2>' to any key combination you prefer)
+nnoremap <F2> :call SetIndentation()<CR>
+
+function! RestoreDefaultIndentation()
+  " Restore default shift width
+  set shiftwidth&
+
+  " Restore default tabstop
+  set tabstop&
+
+  " Restore default expandtab
+  set noexpandtab
+endfunction
+
+" Map a key to trigger the function (you can change '<F3>' to any key combination you prefer)
+nnoremap <F3> :call RestoreDefaultIndentation()<CR>
 
