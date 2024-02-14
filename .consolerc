@@ -1,5 +1,6 @@
 config * {
-     master console.lab.bos.redhat.com;
+     sslenabled yes;
+     master conserver-02.eng.rdu2.redhat.com;
      playback 1000;
 }
 terminal xterm {
