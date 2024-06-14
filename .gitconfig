@@ -5,9 +5,8 @@
 	name = "Tony Camuso"
 [color]
 	branch = auto
-	diff = auto
+	# diff = auto
 	interactive = auto
-	status = auto
 [color "branch"]
 	current = yellow reverse
 	local = yellow
