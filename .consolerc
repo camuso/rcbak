@@ -1,6 +1,7 @@
 config * {
      sslenabled yes;
-     master conserver-02.eng.rdu2.redhat.com;
+     # master conserver-02.eng.rdu2.redhat.com;
+     master conserver-01.cons-001.eng.bos2.dc.redhat.com;
      playback 1000;
 }
 terminal xterm {
