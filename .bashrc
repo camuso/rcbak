@@ -271,3 +271,5 @@ alias cr='chrepo'
 # alias wtitle='xdotool getactivewindow set_window --name'
 alias wtitle='xdotool selectwindow set_window --name'
 alias findspace='find ./* -xdev -maxdepth 0 -type d -exec du -hs {} \;'
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
