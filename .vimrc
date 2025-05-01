@@ -322,8 +322,8 @@ hi search term=reverse term=bold ctermbg=5 ctermfg=2
 :inoremap <c-o><F5> :buffers<CR>:buffer<Space>
 
 " My signature
-inoremap <F12> <c-o>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
-noremap <F12>a<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
+inoremap <F12> <c-o>a<CR>Signed-off-by: Tony Camuso <tcamuso@redhat.com><CR>
+noremap <F12>a<CR>Signed-off-by: Tony Camuso <tcamuso@redhat.com><CR>
 " inoremap <F9> <c-o>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 " noremap <F9>a<CR>Series<CR>Acked-by: Tony Camuso <tcamuso@redhat.com><CR>
 
@@ -392,4 +392,10 @@ endfunction
 
 " Map a key to trigger the function (you can change '<F3>' to any key combination you prefer)
 nnoremap <F3> :call RestoreDefaultIndentation()<CR>
+
+" Map <leader>p to set the format program to use par with a width of 75
+nnoremap <leader>p :set formatprg=par\ -w75<CR>
+
+" Map <leader>q to reformat the current paragraph using gqap
+nnoremap <leader>q gqap
 
