@@ -1,11 +1,24 @@
 config * {
-     sslenabled yes;
+	playback 1000;
+	master conserver1.cons-002.prod.bos2.dc.redhat.com;
+	username "tcamuso";
+}
+
+terminal * {
+	attach "^[]0;console: C^G";
+	attachsubst U=us,C=cs;
+}
+
+# legacy
+#config * {
+#sslenabled yes;
      # master conserver-02.eng.rdu2.redhat.com;
-     master conserver-01.cons-001.eng.bos2.dc.redhat.com;
-     playback 1000;
-}
-terminal xterm {
-    attach "^[]0;conserver: U@C^G";
-    attachsubst U=us,C=cs;
-}
+     # master conserver-01.cons-001.eng.bos2.dc.redhat.com;
+#    master conserver1.cons-002.prod.rdu2.dc.redhat.com
+#    playback 1000;
+#}
+#terminal xterm {
+#   attach "^[]0;conserver: U@C^G";
+#   attachsubst U=us,C=cs;
+#}
 
