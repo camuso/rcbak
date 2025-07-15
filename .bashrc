@@ -91,8 +91,11 @@ alias gitampatch='rlwrap gitampatch'
 alias rold='pushd +1'
 alias rord='pushd -1'
 alias vboxmanage='/usr/lib/virtualbox/VBoxManage'
-alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
-alias rsyncp='rsync -Pat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+# alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+# alias rsyncp='rsync -Pat --update -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+alias rsyncp='rsync -Pat --update -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
+alias rsyncv='rsync -Pvat --update -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
+
 alias grep="grep --color"
 alias grap="grep --color -Hn$tabs"
 #** grip: grep -iIHr -D skip --color
