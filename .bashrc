@@ -79,6 +79,9 @@ function today {
 	date +"%A, %B %-d, %Y"
 }
 
+ght=$(< ~/.config/github/mygithubtoken)
+export GITHUB_TOKEN="$ght"
+
 #** some aliases and functions
 #
 alias rm='rm -i'
