@@ -399,3 +399,5 @@ nnoremap <leader>p :set formatprg=par\ -w75<CR>
 " Map <leader>q to reformat the current paragraph using gqap
 nnoremap <leader>q gqap
 
+" Convert leading 4-space indents to tabs
+command! SpacesToTabs %s/^\s\{4}/\t/g | retab!
