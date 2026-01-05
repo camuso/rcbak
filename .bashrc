@@ -22,6 +22,17 @@ shopt -s extglob
 # Prarit's RHKL git repo tools
 # git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
 
+path_remove() {
+    local remove="$1"
+    local new_path=""
+    local IFS=':'
+    for dir in $PATH; do
+        [[ "$dir" != "$remove" ]] && new_path="${new_path:+$new_path:}$dir"
+    done
+    PATH="$new_path"
+}
+export -f path_remove
+
 for p in bin patchtools public-inbox-tools; do
 	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
 done
