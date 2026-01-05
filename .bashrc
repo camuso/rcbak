@@ -22,8 +22,10 @@ shopt -s extglob
 # Prarit's RHKL git repo tools
 # git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
 
-echo $PATH | grep $HOME > /dev/null
-[ $? -eq 0 ] || export PATH=$PATH:$HOME/bin:$HOME/public-inbox-tools/
+for p in bin patchtools public-inbox-tools; do
+	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
+done
+export PATH
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
