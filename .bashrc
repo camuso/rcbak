@@ -23,10 +23,11 @@ shopt -s extglob
 # git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
 
 path_remove() {
-    local remove="$1"
+    local remove="${1%/}"       # Strip trailing slash from target
     local new_path=""
     local IFS=':'
     for dir in $PATH; do
+        dir="${dir%/}"          # Strip trailing slash from each path
         [[ "$dir" != "$remove" ]] && new_path="${new_path:+$new_path:}$dir"
     done
     PATH="$new_path"
