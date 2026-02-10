@@ -1,7 +1,5 @@
 # .bashrc
 
-[[ $- != *i* ]] && return
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -22,22 +20,8 @@ shopt -s extglob
 # Prarit's RHKL git repo tools
 # git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
 
-path_remove() {
-    local remove="${1%/}"       # Strip trailing slash from target
-    local new_path=""
-    local IFS=':'
-    for dir in $PATH; do
-        dir="${dir%/}"          # Strip trailing slash from each path
-        [[ "$dir" != "$remove" ]] && new_path="${new_path:+$new_path:}$dir"
-    done
-    PATH="$new_path"
-}
-export -f path_remove
-
-for p in bin patchtools public-inbox-tools; do
-	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
-done
-export PATH
+echo $PATH | grep $HOME > /dev/null
+[ $? -eq 0 ] || export PATH=$PATH:$HOME/bin:$HOME/public-inbox-tools/
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
@@ -45,13 +29,11 @@ export HISTCONTROL=ignoredups
 export EDITOR=vim
 
 #echo $LS_COLORS > old_colors
-unset LS_COLORS && declare LS_COLORS='no=00:fi=00:di=01;93:ln=00;36:pi=40;33:so=01;95:bd=40;33;01:cd=40;33;01:tw=01;04;33:ow=01;04;35:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.svgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.bz2=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;36:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;95:*.jpeg=01;95:*.gif=01;95:*.bmp=01;95:*.pbm=01;95:*.pgm=01;95:*.ppm=01;95:*.tga=01;95:*.xbm=01;95:*.xpm=01;95:*.tif=01;95:*.tiff=01;95:*.png=01;95:*.mng=01;95:*.pcx=01;95:*.mov=01;95:*.mpg=01;95:*.mpeg=01;95:*.m2v=01;95:*.mkv=01;95:*.ogm=01;95:*.mp4=01;95:*.m4v=01;95:*.mp4v=01;95:*.vob=01;95:*.qt=01;95:*.nuv=01;95:*.wmv=01;95:*.asf=01;95:*.rm=01;95:*.rmvb=01;95:*.flc=01;95:*.avi=01;95:*.fli=01;95:*.gl=01;95:*.dl=01;95:*.xcf=01;95:*.xwd=01;95:*.yuv=01;95:*.svg=01;95:'
+unset LS_COLORS && declare LS_COLORS='no=00:fi=00:di=01;93:ln=00;36:pi=40;33:so=01;95:bd=40;33;01:cd=40;33;01:tw=01;04;33:ow=01;04;35:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.svgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.bz2=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;95:*.jpeg=01;95:*.gif=01;95:*.bmp=01;95:*.pbm=01;95:*.pgm=01;95:*.ppm=01;95:*.tga=01;95:*.xbm=01;95:*.xpm=01;95:*.tif=01;95:*.tiff=01;95:*.png=01;95:*.mng=01;95:*.pcx=01;95:*.mov=01;95:*.mpg=01;95:*.mpeg=01;95:*.m2v=01;95:*.mkv=01;95:*.ogm=01;95:*.mp4=01;95:*.m4v=01;95:*.mp4v=01;95:*.vob=01;95:*.qt=01;95:*.nuv=01;95:*.wmv=01;95:*.asf=01;95:*.rm=01;95:*.rmvb=01;95:*.flc=01;95:*.avi=01;95:*.fli=01;95:*.gl=01;95:*.dl=01;95:*.xcf=01;95:*.xwd=01;95:*.yuv=01;95:*.svg=01;95:'
 export LS_COLORS
 
-#export GREP_COLORS='sl=30;43:cx=30;42:mt=1;36:ms=1;32:mc=1;33:fn=1;35:ln=1;36:bn=1;34:se=36'
-
 # export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=01;32:ln=01;32:bn=32:se=36'
-export GREP_COLORS='ln=01;33:mt=01;36:ms=01;36:mc=01;32:sl=:cx=:fn=95:ln=32:bn=32:se=36'
+export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=95:ln=32:bn=32:se=36'
 
 #** Text Attributes
 #
@@ -93,9 +75,6 @@ function today {
 	date +"%A, %B %-d, %Y"
 }
 
-ght=$(< ~/.config/github/mygithubtoken)
-export GITHUB_TOKEN="$ght"
-
 #** some aliases and functions
 #
 alias rm='rm -i'
@@ -108,11 +87,8 @@ alias gitampatch='rlwrap gitampatch'
 alias rold='pushd +1'
 alias rord='pushd -1'
 alias vboxmanage='/usr/lib/virtualbox/VBoxManage'
-# alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
-# alias rsyncp='rsync -Pat --update -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
-alias rsyncp='rsync -Pat --update -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
-alias rsyncv='rsync -Pvat --update -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
-
+alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+alias rsyncp='rsync -Pat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
 alias grep="grep --color"
 alias grap="grep --color -Hn$tabs"
 #** grip: grep -iIHr -D skip --color
@@ -284,7 +260,6 @@ myremotes() { git remote -v | grep tcamuso; git branch -r | grep tcamuso; }
 #*
 gremote() { git branch -r | grep $1; }
 
-uname -r | grep -q 'Microsoft' && export DISPLAY=localhost:0.0
 export HISTTIMEFORMAT="%Y/%m/%d %T "
 export WORK="/WORK"
 
@@ -293,5 +268,38 @@ alias cr='chrepo'
 # alias wtitle='xdotool getactivewindow set_window --name'
 alias wtitle='xdotool selectwindow set_window --name'
 alias findspace='find ./* -xdev -maxdepth 0 -type d -exec du -hs {} \;'
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
+
+# Detect WSL
+if grep -qi microsoft /proc/version; then
+    IS_WSL=1
+else
+    IS_WSL=0
+fi
+
+# Desktop-only environment setup
+if [ "$IS_WSL" -eq 0 ]; then
+    # Fedora/Cinnamon desktop DISPLAY
+    export DISPLAY="$(grep nameserver /etc/resolv.conf | sed 's/nameserver //'):0"
+
+    # dbus session for real Linux desktop
+    export $(dbus-launch)
+
+    # xdotool only works on real X11
+    alias wtitle='xdotool selectwindow set_window --name'
+fi
+
+# WSL-specific fixes
+if [ "$IS_WSL" -eq 1 ]; then
+    # Fix XDG_RUNTIME_DIR so dbus can start
+    export XDG_RUNTIME_DIR="$HOME/.xdg-runtime"
+    mkdir -p "$XDG_RUNTIME_DIR"
+    chmod 700 "$XDG_RUNTIME_DIR"
+
+    # Start a private dbus session if one does not exist
+    if [ ! -S "$XDG_RUNTIME_DIR/bus" ]; then
+        eval "$(dbus-launch --sh-syntax)"
+    fi
+
+    export GDK_BACKEND=x11
+    export NO_AT_BRIDGE=1
+fi
