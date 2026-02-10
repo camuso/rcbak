@@ -1,5 +1,7 @@
 # .bashrc
 
+[[ $- != *i* ]] && return
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -20,8 +22,22 @@ shopt -s extglob
 # Prarit's RHKL git repo tools
 # git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
 
-echo $PATH | grep $HOME > /dev/null
-[ $? -eq 0 ] || export PATH=$PATH:$HOME/bin:$HOME/public-inbox-tools/
+path_remove() {
+    local remove="${1%/}"       # Strip trailing slash from target
+    local new_path=""
+    local IFS=':'
+    for dir in $PATH; do
+        dir="${dir%/}"          # Strip trailing slash from each path
+        [[ "$dir" != "$remove" ]] && new_path="${new_path:+$new_path:}$dir"
+    done
+    PATH="$new_path"
+}
+export -f path_remove
+
+for p in bin patchtools public-inbox-tools; do
+	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
+done
+export PATH
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
@@ -33,7 +49,9 @@ unset LS_COLORS && declare LS_COLORS='no=00:fi=00:di=01;93:ln=00;36:pi=40;33:so=
 export LS_COLORS
 
 # export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=01;32:ln=01;32:bn=32:se=36'
-export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=95:ln=32:bn=32:se=36'
+
+# export GREP_COLORS='ms=01;31:mc=01;31:sl=:cx=:fn=95:ln=32:bn=32:se=36'
+export GREP_COLORS='ln=01;33:mt=01;36:ms=01;36:mc=01;32:sl=:cx=:fn=95:ln=32:bn=32:se=36'
 
 #** Text Attributes
 #
@@ -75,6 +93,9 @@ function today {
 	date +"%A, %B %-d, %Y"
 }
 
+ght=$(< ~/.config/github/mygithubtoken)
+export GITHUB_TOKEN="$ght"
+
 #** some aliases and functions
 #
 alias rm='rm -i'
@@ -87,8 +108,11 @@ alias gitampatch='rlwrap gitampatch'
 alias rold='pushd +1'
 alias rord='pushd -1'
 alias vboxmanage='/usr/lib/virtualbox/VBoxManage'
-alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
-alias rsyncp='rsync -Pat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+# alias rsyncv='rsync -Pvat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+# alias rsyncp='rsync -Pat -e "ssh -4 -o 'StrictHostKeyChecking=no' -o 'UserKnownHostsFile=/dev/null'"'
+alias rsyncp='rsync -Pat --update -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
+alias rsyncv='rsync -Pvat --update -e "ssh -4 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
+
 alias grep="grep --color"
 alias grap="grep --color -Hn$tabs"
 #** grip: grep -iIHr -D skip --color
@@ -268,6 +292,13 @@ alias cr='chrepo'
 # alias wtitle='xdotool getactivewindow set_window --name'
 alias wtitle='xdotool selectwindow set_window --name'
 alias findspace='find ./* -xdev -maxdepth 0 -type d -exec du -hs {} \;'
+
+# for passwordless SSH sessions
+# Start ssh-agent
+# Connect your shell to it
+# Load your SSH key into i
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
 
 # Detect WSL
 if grep -qi microsoft /proc/version; then
