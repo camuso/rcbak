@@ -93,8 +93,10 @@ function today {
 	date +"%A, %B %-d, %Y"
 }
 
-ght=$(< ~/.config/github/mygithubtoken)
-export GITHUB_TOKEN="$ght"
+if [[ -f ~/.config/github/mygithubtoken ]]; then
+    ght=$(< ~/.config/github/mygithubtoken)
+    export GITHUB_TOKEN="$ght"
+fi
 
 #** some aliases and functions
 #
@@ -298,7 +300,8 @@ alias findspace='find ./* -xdev -maxdepth 0 -type d -exec du -hs {} \;'
 # Connect your shell to it
 # Load your SSH key into i
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
+[[ -f ~/.ssh/id_rsa ]] && ssh-add ~/.ssh/id_rsa
+[[ -f ~/.ssh/id_ed25519 ]] && ssh-add ~/.ssh/id_ed25519
 
 # Detect WSL
 if grep -qi microsoft /proc/version; then
@@ -313,7 +316,15 @@ if [ "$IS_WSL" -eq 0 ]; then
     export DISPLAY="$(grep nameserver /etc/resolv.conf | sed 's/nameserver //'):0"
 
     # dbus session for real Linux desktop
-    export $(dbus-launch)
+    if command -v dbus-launch &>/dev/null; then
+        if [[ -n "$DISPLAY" ]] && xset q &>/dev/null 2>&1; then
+            export $(dbus-launch)
+        else
+            echo "Note: No active X session - dbus not started"
+        fi
+    else
+        echo "Note: dbus-launch not installed - dbus not available"
+    fi
 
     # xdotool only works on real X11
     alias wtitle='xdotool selectwindow set_window --name'
@@ -328,7 +339,11 @@ if [ "$IS_WSL" -eq 1 ]; then
 
     # Start a private dbus session if one does not exist
     if [ ! -S "$XDG_RUNTIME_DIR/bus" ]; then
-        eval "$(dbus-launch --sh-syntax)"
+        if command -v dbus-launch &>/dev/null; then
+            eval "$(dbus-launch --sh-syntax)"
+        else
+            echo "Note: dbus-launch not installed - dbus not available (WSL)"
+        fi
     fi
 
     export GDK_BACKEND=x11
