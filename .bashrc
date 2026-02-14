@@ -311,7 +311,13 @@ else
 fi
 
 # Desktop-only environment setup
-if [ "$IS_WSL" -eq 0 ]; then
+# Skip this entire section for SSH sessions because:
+#   1. SSH sessions don't have access to the local X display (VNC, console, etc.)
+#   2. Setting DISPLAY from resolv.conf nameserver is meaningless for SSH
+#   3. dbus-launch requires an active X session to function
+#   4. X forwarding (ssh -X) sets DISPLAY automatically when needed
+# SSH_CONNECTION is set by sshd for all SSH sessions.
+if [ "$IS_WSL" -eq 0 ] && [ -z "$SSH_CONNECTION" ]; then
     # Fedora/Cinnamon desktop DISPLAY
     export DISPLAY="$(grep nameserver /etc/resolv.conf | sed 's/nameserver //'):0"
 
