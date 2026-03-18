@@ -36,5 +36,6 @@
 	cmt = commit -s
 	wip = checkout wip
 	alias = config --get-regexp ^alias\\.
+	cc = !git-commit-clean
 [http]
 	sslVerify = false
