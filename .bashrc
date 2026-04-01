@@ -22,6 +22,7 @@ shopt -s extglob
 # Prarit's RHKL git repo tools
 # git clone https://gitlab.cee.redhat.com/prarit/public-inbox-tools
 
+# Function to Remove an executable path from env PATH
 path_remove() {
     local remove="${1%/}"       # Strip trailing slash from target
     local new_path=""
@@ -34,10 +35,24 @@ path_remove() {
 }
 export -f path_remove
 
+# Function to show uptime the way it appears in dmesg
+myuptime() {
+    # Read the kernel's monotonic uptime (same source dmesg uses)
+    local up
+    up=$(cut -d' ' -f1 /proc/uptime)
+
+    # Print it with dmesg's classic formatting:
+    # leading space, 12-wide field, 6 decimals, inside brackets
+    printf "[ %12.6f ]\n" "$up"
+}
+export -f myuptime
+
+# Put these paths in ENV path, if they're not already there
 for p in bin patchtools public-inbox-tools; do
 	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
 done
 export PATH
+
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
