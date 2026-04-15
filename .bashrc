@@ -48,11 +48,15 @@ myuptime() {
 export -f myuptime
 
 # Put these paths in ENV path, if they're not already there
-for p in bin patchtools public-inbox-tools; do
+for p in bin patchtools public-inbox-tools google-cloud-sdk/bin; do
 	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
 done
 export PATH
 
+# Claude Code via Google Cloud Vertex AI
+export CLAUDE_CODE_USE_VERTEX=1
+export CLOUD_ML_REGION=us-east5
+export ANTHROPIC_VERTEX_PROJECT_ID=itpc-gcp-global-eng-claude
 
 export TEMPDIR=~/Maildir/temp/
 export PRJDIR=../foo
