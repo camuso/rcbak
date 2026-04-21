@@ -1,5 +1,11 @@
 # .bashrc
 
+# PATH setup - must be before early exit for non-interactive shells
+for p in bin patchtools public-inbox-tools google-cloud-sdk/bin; do
+	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
+done
+export PATH
+
 [[ $- != *i* ]] && return
 
 # Source global definitions
@@ -46,12 +52,6 @@ myuptime() {
     printf "[ %12.6f ]\n" "$up"
 }
 export -f myuptime
-
-# Put these paths in ENV path, if they're not already there
-for p in bin patchtools public-inbox-tools google-cloud-sdk/bin; do
-	[[ ":$PATH:" != *":$HOME/$p:"* ]] && PATH="$PATH:$HOME/$p"
-done
-export PATH
 
 # Claude Code via Google Cloud Vertex AI
 export CLAUDE_CODE_USE_VERTEX=1
