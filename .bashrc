@@ -15,6 +15,16 @@ fi
 
 shopt -s extglob
 
+# Always prefer the systemd-managed user D-Bus session bus over whatever
+# DBUS_SESSION_BUS_ADDRESS this shell may have inherited (e.g. a stray
+# private bus leaked by a VNC xstartup's dbus-launch, or by a parent
+# process that was itself launched from a polluted desktop session).
+# Tools like podman, toolbox, and systemctl --user need the real systemd
+# bus to work correctly; a stale private bus makes them fail or hang.
+if [ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/bus" ]; then
+    export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/bus"
+fi
+
 #export CLICOLOR=1
 #export LSCOLORS=DxGxcxdxCxegedabagacad
 
@@ -123,7 +133,7 @@ fi
 alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -iv'
-alias alf='ls -alFch'
+alias alf='ls -a1ch'
 alias searchdown='perl /usr/bin/searchdown.pl'
 alias mntiso='mount -o loop -t iso9660'
 alias gitampatch='rlwrap gitampatch'
@@ -180,6 +190,19 @@ vimdiff(){
     stty "$STTYOPTS"
 }
 typeset -fx vimdif
+
+# cursor: when called with no arguments, show a menu of saved
+# *.code-workspace files (via cursor-workspace-menu) instead of just
+# launching a blank window. Any arguments (e.g. `cursor .`, `cursor foo.py`)
+# bypass the menu and go straight to the real cursor binary as usual.
+cursor(){
+    if [ $# -eq 0 ] && [ -x "$HOME/bin/cursor-workspace-menu" ]; then
+        "$HOME/bin/cursor-workspace-menu"
+    else
+        command cursor "$@"
+    fi
+}
+typeset -fx cursor
 
 #** Little helpers
 #*
@@ -342,7 +365,15 @@ if [ "$IS_WSL" -eq 0 ] && [ -z "$SSH_CONNECTION" ]; then
     export DISPLAY="$(grep nameserver /etc/resolv.conf | sed 's/nameserver //'):0"
 
     # dbus session for real Linux desktop
-    if command -v dbus-launch &>/dev/null; then
+    # Prefer the systemd-managed user bus (already running via
+    # dbus-broker.service under systemd --user) over spawning a private
+    # dbus-launch instance. Unconditionally calling dbus-launch here leaks a
+    # new orphaned dbus-daemon every time a local (non-SSH) shell starts,
+    # and disconnects the shell from the real systemd user bus that tools
+    # like podman/toolbox/systemctl --user need to talk to.
+    if [ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/bus" ]; then
+        export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/bus"
+    elif command -v dbus-launch &>/dev/null; then
         if [[ -n "$DISPLAY" ]] && xset q &>/dev/null 2>&1; then
             export $(dbus-launch)
         else
