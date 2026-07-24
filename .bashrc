@@ -191,19 +191,6 @@ vimdiff(){
 }
 typeset -fx vimdif
 
-# cursor: when called with no arguments, show a menu of saved
-# *.code-workspace files (via cursor-workspace-menu) instead of just
-# launching a blank window. Any arguments (e.g. `cursor .`, `cursor foo.py`)
-# bypass the menu and go straight to the real cursor binary as usual.
-cursor(){
-    if [ $# -eq 0 ] && [ -x "$HOME/bin/cursor-workspace-menu" ]; then
-        "$HOME/bin/cursor-workspace-menu"
-    else
-        command cursor "$@"
-    fi
-}
-typeset -fx cursor
-
 #** Little helpers
 #*
 #** lsd: ls directories starting at $1
