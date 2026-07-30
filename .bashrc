@@ -133,7 +133,7 @@ fi
 alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -iv'
-alias alf='ls -a1ch'
+alias alf='ls -alchF'
 alias searchdown='perl /usr/bin/searchdown.pl'
 alias mntiso='mount -o loop -t iso9660'
 alias gitampatch='rlwrap gitampatch'
